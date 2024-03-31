@@ -5,7 +5,11 @@ import { ChangeEvent, FormEvent, useState } from 'react';
 
 import { X } from 'lucide-react';
 
-export function NewNoteCard() {
+interface NewNoteCardPorps {
+  onNoteCreated: (content: string) => void;
+}
+
+export function NewNoteCard({onNoteCreated}: NewNoteCardPorps) {
   const [shouldShowOnboarding, setShouldShowOnboarding] = useState(true);
   const [content, setContent] = useState('');
 
@@ -25,8 +29,10 @@ export function NewNoteCard() {
     event.preventDefault();
 
     if (content !== '') {
-      console.log(content);
-  
+      onNoteCreated(content);
+
+      setContent('');
+      setShouldShowOnboarding(true);
       toast.success('Nota criada com sucesso!');
     }
   }
@@ -64,6 +70,7 @@ export function NewNoteCard() {
                     autoFocus 
                     className='text-sm leading-6 text-slate-400 bg-transparent resize-none flex-1 outline-none'
                     onChange={handleContentChanged}
+                    value={content}
                   />
                 )}
 
